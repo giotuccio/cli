@@ -1,0 +1,75 @@
+<div class="flex flex-end ml-12 justify-content-end"> 
+<p-toggleButton class="flex" [(ngModel)]="manageProducts" onLabel="Stock" offLabel="Prioritize"></p-toggleButton>
+</div>
+<div class="card flex  justify-content-center" *ngIf="!manageProducts">
+
+    <p-orderList class="w-full" [value]="products" [listStyle]="{ 'max-height': '50rem' }" header="Products">
+        <ng-template let-product pTemplate="item">
+            <div class="flex align-items-center p-2 w-full flex-wrap" (click)="showDialog(product)">
+                <div class="w-full text-center lg:w-auto lg:text-left border-1 border-black">
+                    <img width="200" src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
+                        [alt]="product.name" />
+
+                </div>
+
+                <div class="flex-1 ml-4">
+                    <h5 class="mb-2">{{ product.name }}</h5>
+                    <i class="pi pi-tag vertical-align-middle mr-2"></i>
+                    <span class="vertical-align-middle line-height-1">{{ product.category }}</span>
+
+                </div>
+                <div class="flex-1">
+
+                    <p-rating class="vertical-align-middle line-height-1" [readonly]="true" [cancel]="false"
+                        [(ngModel)]="product.rating" [stars]="5"></p-rating>
+                </div>
+                <div class="flex flex-column justify-content-center align-items-end gap-2">
+                    <h6 class="mb-2 text-lg">{{ product.price | currency }}</h6>
+                    <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)"></p-tag>
+                    <div class="card flex justify-content-center">
+                        <p-toast></p-toast>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-orderList>
+</div>
+
+
+
+
+<div *ngIf="manageProducts">
+        <app-picklist></app-picklist>
+</div>
+<p-dialog header="{{selectedProduct?.name}}" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+    [draggable]="false" [resizable]="false">
+    <div class="gap-2 flex flex-row justify-content-center">
+        <p-image  [preview]="true" width="400" [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + selectedProduct?.image" ></p-image>
+        <div class="flex flex-column ml-4 gap-2">
+            <p class="m-0 font-bold">
+                {{selectedProduct?.price | currency}}
+
+            </p>
+            <p-rating [readonly]="true" [cancel]="false" [ngModel]="selectedProduct?.rating ?? 0"
+                [stars]="5"></p-rating>
+            <p-tag class="m-0"  [severity]="getSeverity(selectedProduct?.inventoryStatus)">
+                {{selectedProduct?.inventoryStatus}}
+
+            </p-tag>
+            <p class="m-0 font-bold">
+             Quanity:   {{selectedProduct?.quantity}}
+
+            </p>
+            <button *ngIf="selectedProduct?.inventoryStatus == 'OUTOFSTOCK' || selectedProduct?.inventoryStatus == 'LOWSTOCK'" type="button" pButton pRipple (click)="showToast()" label="Order More" class="p-button-success" icon="pi pi-money-bill"></button>
+        </div>
+
+    </div>
+    <p-divider></p-divider>
+    <div class="text-lg text-center mt-2 mb-2">Top Sellers</div>
+
+<div class="flex flex-row m-auto justify-content-center gap-3">
+    <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" alt="Image" width="250" [preview]="true"></p-image>
+    <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" alt="Image" width="250" [preview]="true"></p-image>
+    <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" alt="Image" width="250" [preview]="true"></p-image>
+</div>
+</p-dialog>

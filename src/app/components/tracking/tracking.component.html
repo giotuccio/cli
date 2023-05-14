@@ -1,0 +1,21 @@
+<div class="grid">
+    <div class="grid mt-8" *ngFor="let order of saleOrders" >
+      <div class="card m-auto ml-8 w-28rem">
+        <h3>{{ order.product.name }}</h3>
+        <p>Delivering to:
+        {{order.customer.name}}
+
+        </p>
+        <p> {{order.customer.address}}</p>
+        <p>Sales Date: {{ order.salesDate }}</p>
+
+        <p>Delivered Date: {{ order.deliveredDate }}</p>
+        <p>ETA Date: {{ order.etaDate }}</p>
+        <p-progressBar [value]="order.distance"></p-progressBar>
+        <p>{{order.distance == 100 ? 'Delivered' : order.distance < 50 ? 'Ready to Ship' : 'In Route'}}</p> 
+        <hr>
+      </div>
+      
+    </div>
+  </div>
+  

@@ -1,0 +1,10 @@
+<div class="flex flex-row align-center gap-8 justify-content-center mt-2 align-items-center border-top border-top-1
+p-2 w-full" *ngFor="let product of products">
+    <p-image class="align-items-center"  [preview]="true" width="200" [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product?.image" ></p-image>
+
+    <h3>{{ product.name }}</h3>
+    <p>Current Price: {{ product.price | currency}}</p>
+    <input class="flex flex-column ml-8 align-items-center" pInputText pKeyFilter="int" placeholder="Integers" [(ngModel)]="product.price" (change)="handlePriceChange(product.id, getProductPrice(product.price))" />
+    <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-text"></p-button>
+  </div>
+  
